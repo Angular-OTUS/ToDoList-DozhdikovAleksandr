@@ -1,0 +1,10 @@
+.item {
+  display: flex;
+  justify-content: space-between;
+  background: #eeeeee;
+  border-radius: 4px;
+
+  .title {
+    padding: 15px;
+  }
+}

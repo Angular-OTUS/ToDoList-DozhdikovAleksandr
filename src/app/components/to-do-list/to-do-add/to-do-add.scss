@@ -1,0 +1,14 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
+  width: 100%;
+  padding: 20px 0;
+
+  input {
+    height: 40px;
+    width: 100%;
+    border: 1px #dddddd solid;
+    border-radius: 3px;
+  }
+}
