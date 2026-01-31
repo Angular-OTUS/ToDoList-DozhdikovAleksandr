@@ -1,4 +1,9 @@
-import { Component } from '@angular/core';
+import {Component, input, output} from '@angular/core';
+
+export interface Item {
+  id: number;
+  text: string;
+}
 
 @Component({
   selector: 'app-to-do-item',
@@ -8,4 +13,10 @@ import { Component } from '@angular/core';
 })
 export class ToDoItem {
 
+  readonly item = input.required<Item>();
+  readonly deleteItem = output<Item>();
+
+  public delete(item: Item): void {
+    this.deleteItem.emit(item);
+  }
 }
