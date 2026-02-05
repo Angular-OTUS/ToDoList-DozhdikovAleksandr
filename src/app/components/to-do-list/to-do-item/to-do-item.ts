@@ -1,22 +1,14 @@
-import {Component, input, output} from '@angular/core';
-
-export interface Item {
-  id: number;
-  text: string;
-}
+import {ChangeDetectionStrategy, Component, input, output} from '@angular/core';
+import {Task} from '../../../data/task';
 
 @Component({
   selector: 'app-to-do-item',
-  imports: [],
   templateUrl: './to-do-item.html',
   styleUrl: './to-do-item.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ToDoItem {
 
-  readonly item = input.required<Item>();
-  readonly deleteItem = output<Item>();
-
-  public delete(item: Item): void {
-    this.deleteItem.emit(item);
-  }
+  readonly task = input.required<Task>();
+  readonly deleteItem = output<Task>();
 }

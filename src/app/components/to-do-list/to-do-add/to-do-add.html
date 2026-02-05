@@ -2,5 +2,5 @@
   <mat-form-field>
     <input matInput type="text" [(ngModel)]="textValue" />
   </mat-form-field>
-  <div class="button button-add" [class.disabled]="'' === textValue" (click)="add(textValue)">Add task</div>
+  <button class="button button--add" [disabled]="'' === textValue" (click)="add(textValue)">Add task</button>
 </div>

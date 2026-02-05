@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
-import {Item, ToDoItem} from './to-do-item/to-do-item';
+import {ChangeDetectionStrategy, Component, signal} from '@angular/core';
+import {ToDoItem} from './to-do-item/to-do-item';
 import {ToDoAdd} from './to-do-add/to-do-add';
+import {Task} from '../../data/task';
 
 @Component({
   selector: 'app-to-do-list',
@@ -10,27 +11,30 @@ import {ToDoAdd} from './to-do-add/to-do-add';
   ],
   templateUrl: './to-do-list.html',
   styleUrl: './to-do-list.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class ToDoList {
-  public items: Item[] = [
-    {
-      id: 1,
-      text: "Нужно что-то сделать (1)..."
-    },
-    {
-      id: 2,
-      text: "Нужно что-то сделать (2)..."
-    },
-  ];
 
-  public deleteItem(item: Item): void {
-    this.items = this.items.filter(element => element.id !== item.id);
+  public tasks = signal<Task[]>(
+    [
+      {
+        id: 1,
+        text: "Нужно что-то сделать (1)..."
+      },
+      {
+        id: 2,
+        text: "Нужно что-то сделать (2)..."
+      },
+    ]
+  );
+
+  deleteItem(task: Task): void {
+    this.tasks.set(this.tasks().filter(element => element.id !== task.id));
   }
 
-  public addItem(text: string): void {
-    const maxId: number = Math.max(...this.items.map(obj => obj.id));
-    this.items.push({id: maxId + 1, text});
-    console.log(this.items);
+  addItem(text: string): void {
+    const maxId: number = Math.max(0,...this.tasks().map(obj => obj.id));
+    this.tasks.set([...this.tasks(), {id: maxId + 1, text}]);
   }
 }

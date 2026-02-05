@@ -6,10 +6,10 @@
   padding: 20px 0;
 
   .button {
-    &.button-add {
+    &.button--add {
       background: green;
     }
-    &.disabled {
+    &[disabled] {
       opacity: 0.5;
     }
   }

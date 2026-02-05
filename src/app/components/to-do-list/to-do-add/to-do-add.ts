@@ -1,4 +1,4 @@
-import {Component, output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, output} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {MatFormField, MatInput} from '@angular/material/input';
 
@@ -11,6 +11,7 @@ import {MatFormField, MatInput} from '@angular/material/input';
   ],
   templateUrl: './to-do-add.html',
   styleUrl: './to-do-add.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ToDoAdd {
   textValue: string = '';

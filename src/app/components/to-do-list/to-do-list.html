@@ -1,15 +1,14 @@
 <h1>Todo List</h1>
 
 <ul>
-  @for (item of items; track item.id) {
+  @for (task of tasks(); track task.id) {
     <li>
       <app-to-do-item
-        [item]="item"
+        [task]="task"
         (deleteItem)="deleteItem($event)"
       />
     </li>
   }
 </ul>
-
 
 <app-to-do-add (addItem)="addItem($event)"/>

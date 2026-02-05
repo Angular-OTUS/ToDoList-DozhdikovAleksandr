@@ -1,8 +1,8 @@
 <div class="item">
   <div class="title">
-    {{ item().text }}
+    {{ task().text }}
   </div>
-  <div class="button button-delete" (click)="delete(item())">
+  <button class="button button--delete" (click)="this.deleteItem.emit(task());">
     Delete
-  </div>
+  </button>
 </div>
