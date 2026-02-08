@@ -1,20 +1,23 @@
-import {ChangeDetectionStrategy, Component, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit, signal} from '@angular/core';
 import {ToDoItem} from './to-do-item/to-do-item';
 import {ToDoAdd} from './to-do-add/to-do-add';
 import {Task} from '../../data/task';
+import {MatProgressSpinner} from '@angular/material/progress-spinner';
+import {timer} from 'rxjs';
 
 @Component({
   selector: 'app-to-do-list',
   imports: [
     ToDoAdd,
     ToDoItem,
+    MatProgressSpinner
   ],
   templateUrl: './to-do-list.html',
   styleUrl: './to-do-list.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class ToDoList {
+export class ToDoList implements OnInit {
 
   public tasks = signal<Task[]>(
     [
@@ -28,6 +31,14 @@ export class ToDoList {
       },
     ]
   );
+
+  public isLoading = signal<boolean>(true);
+
+  ngOnInit() {
+    timer(500).subscribe(() => {
+      this.isLoading.set(false);
+    });
+  }
 
   deleteItem(task: Task): void {
     this.tasks.set(this.tasks().filter(element => element.id !== task.id));

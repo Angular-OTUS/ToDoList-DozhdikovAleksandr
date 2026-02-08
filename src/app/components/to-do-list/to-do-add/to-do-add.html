@@ -2,5 +2,6 @@
   <mat-form-field>
     <input matInput type="text" [(ngModel)]="textValue" />
   </mat-form-field>
-  <button class="button button--add" [disabled]="!textValue().trim()" (click)="add(textValue())">Add task</button>
+  <!-- disabled разве не нужно прокидывать в app-button-component ? -->
+  <app-button-component [title]="'Add task'" (click)="add(textValue())"/>
 </div>
