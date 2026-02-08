@@ -2,7 +2,7 @@
   <div class="title">
     {{ task().text }}
   </div>
-  <button class="button button--delete" (click)="this.deleteItem.emit(task());">
+  <button class="button button--delete" (click)="deleteItem.emit(task());">
     Delete
   </button>
 </div>

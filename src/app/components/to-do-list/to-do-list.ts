@@ -7,7 +7,7 @@ import {Task} from '../../data/task';
   selector: 'app-to-do-list',
   imports: [
     ToDoAdd,
-    ToDoItem
+    ToDoItem,
   ],
   templateUrl: './to-do-list.html',
   styleUrl: './to-do-list.scss',
@@ -35,6 +35,6 @@ export class ToDoList {
 
   addItem(text: string): void {
     const maxId: number = Math.max(0,...this.tasks().map(obj => obj.id));
-    this.tasks.set([...this.tasks(), {id: maxId + 1, text}]);
+    this.tasks.update((tasks) => [...tasks, {id: maxId + 1, text}]);
   }
 }

@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, output, signal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {MatFormField, MatInput} from '@angular/material/input';
 
@@ -14,7 +14,7 @@ import {MatFormField, MatInput} from '@angular/material/input';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ToDoAdd {
-  textValue: string = '';
+  textValue = signal<string>('');
 
   readonly addItem = output<string>();
 
@@ -24,6 +24,6 @@ export class ToDoAdd {
       return;
     }
     this.addItem.emit(text);
-    this.textValue = '';
+    this.textValue.set('');
   }
 }
