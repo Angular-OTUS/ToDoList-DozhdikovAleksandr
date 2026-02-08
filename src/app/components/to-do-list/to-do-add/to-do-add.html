@@ -1,4 +1,6 @@
 <div class="container">
-  <input type="text" />
-  <div class="btn-add">Add task</div>
+  <mat-form-field>
+    <input matInput type="text" [(ngModel)]="textValue" />
+  </mat-form-field>
+  <button class="button button--add" [disabled]="!textValue().trim()" (click)="add(textValue())">Add task</button>
 </div>

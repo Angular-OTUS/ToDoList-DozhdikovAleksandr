@@ -8,13 +8,9 @@
     padding: 15px;
   }
 
-  .btn-delete {
-    display: flex;
-    align-items: center;
-    text-wrap: nowrap;
-    font-family: Roboto,sans-serif;
-    border-radius: 2px;
-    border: 2px grey solid;
-    padding: 5px;
+  .button {
+    &.button--delete {
+      background: red;
+    }
   }
 }
