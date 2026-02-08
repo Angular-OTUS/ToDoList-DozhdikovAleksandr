@@ -8,7 +8,7 @@ describe('ToDoAdd', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ToDoAdd]
+      imports: [ToDoAdd],
     })
     .compileComponents();
 

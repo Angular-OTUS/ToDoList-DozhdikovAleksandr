@@ -7,9 +7,9 @@ import {ButtonComponent} from '../../button-component/button-component';
   templateUrl: './to-do-item.html',
   styleUrl: './to-do-item.scss',
   imports: [
-    ButtonComponent
+    ButtonComponent,
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToDoItem {
 

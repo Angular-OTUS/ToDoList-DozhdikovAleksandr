@@ -9,11 +9,11 @@ import {ButtonComponent} from '../../button-component/button-component';
     FormsModule,
     MatInput,
     MatFormField,
-    ButtonComponent
+    ButtonComponent,
   ],
   templateUrl: './to-do-add.html',
   styleUrl: './to-do-add.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToDoAdd {
   textValue = signal<string>('');

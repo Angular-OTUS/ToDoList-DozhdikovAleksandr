@@ -10,11 +10,11 @@ import {timer} from 'rxjs';
   imports: [
     ToDoAdd,
     ToDoItem,
-    MatProgressSpinner
+    MatProgressSpinner,
   ],
   templateUrl: './to-do-list.html',
   styleUrl: './to-do-list.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
 export class ToDoList implements OnInit {
@@ -23,13 +23,13 @@ export class ToDoList implements OnInit {
     [
       {
         id: 1,
-        text: "Нужно что-то сделать (1)..."
+        text: "Нужно что-то сделать (1)...",
       },
       {
         id: 2,
-        text: "Нужно что-то сделать (2)..."
+        text: "Нужно что-то сделать (2)...",
       },
-    ]
+    ],
   );
 
   public isLoading = signal<boolean>(true);
