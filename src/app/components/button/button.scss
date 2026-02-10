@@ -10,8 +10,10 @@ button {
 
   cursor: pointer;
 
+  background: lightgrey;
+
   &:hover:not(:disabled) {
-    background: lightgray;
+    background: #dddddd;
   }
 
   &:active:not(:disabled) {
@@ -19,7 +21,7 @@ button {
   }
 
   &:focus {
-    border: 1px grey solid;
+    background: #eeeeee;
   }
 
   &:disabled {
