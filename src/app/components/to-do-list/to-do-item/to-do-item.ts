@@ -1,13 +1,13 @@
 import {ChangeDetectionStrategy, Component, input, output} from '@angular/core';
 import {Task} from '../../../data/task';
-import {ButtonComponent} from '../../button-component/button-component';
+import {Button} from '../../button/button';
 
 @Component({
   selector: 'app-to-do-item',
   templateUrl: './to-do-item.html',
   styleUrl: './to-do-item.scss',
   imports: [
-    ButtonComponent,
+    Button,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -1,9 +1,10 @@
-import {ChangeDetectionStrategy, Component, OnInit, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit, signal} from '@angular/core';
 import {ToDoItem} from './to-do-item/to-do-item';
 import {ToDoAdd} from './to-do-add/to-do-add';
 import {Task} from '../../data/task';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {timer} from 'rxjs';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-to-do-list',
@@ -34,14 +35,16 @@ export class ToDoList implements OnInit {
 
   public isLoading = signal<boolean>(true);
 
+  private destroyRef = inject(DestroyRef);
+
   ngOnInit() {
-    timer(500).subscribe(() => {
+    timer(500).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.isLoading.set(false);
     });
   }
 
   deleteItem(task: Task): void {
-    this.tasks.set(this.tasks().filter(element => element.id !== task.id));
+    this.tasks.update((tasks) => tasks.filter(element => element.id !== task.id));
   }
 
   addItem(text: string): void {

@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, output, signal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {MatFormField, MatInput} from '@angular/material/input';
-import {ButtonComponent} from '../../button-component/button-component';
+import {Button} from '../../button/button';
 
 @Component({
   selector: 'app-to-do-add',
@@ -9,7 +9,7 @@ import {ButtonComponent} from '../../button-component/button-component';
     FormsModule,
     MatInput,
     MatFormField,
-    ButtonComponent,
+    Button,
   ],
   templateUrl: './to-do-add.html',
   styleUrl: './to-do-add.scss',

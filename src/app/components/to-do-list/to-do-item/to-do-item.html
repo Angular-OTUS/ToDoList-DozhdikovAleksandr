@@ -2,5 +2,8 @@
   <div class="title">
     {{ task().text }}
   </div>
-  <app-button-component [title]="'Delete'" (click)="deleteItem.emit(task());"/>
+  <app-button
+    [title]="'Delete'"
+    (clickEvent)="deleteItem.emit(task());"
+  />
 </div>
