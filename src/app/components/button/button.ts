@@ -9,5 +9,5 @@ import {ChangeDetectionStrategy, Component, input, output} from '@angular/core';
 export class Button {
   title = input.required<string>();
   disabled = input<boolean>(false);
-  clickEvent= output<void>();
+  buttonClick= output<void>();
 }

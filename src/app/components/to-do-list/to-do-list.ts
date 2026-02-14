@@ -48,7 +48,9 @@ export class ToDoList implements OnInit {
   }
 
   addItem(text: string): void {
-    const maxId: number = Math.max(0,...this.tasks().map(obj => obj.id));
-    this.tasks.update((tasks) => [...tasks, {id: maxId + 1, text}]);
+    if (text.trim().length) {
+      const maxId: number = Math.max(0,...this.tasks().map(obj => obj.id));
+      this.tasks.update((tasks) => [...tasks, {id: maxId + 1, text}]);
+    }
   }
 }

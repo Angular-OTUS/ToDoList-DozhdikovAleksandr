@@ -5,6 +5,6 @@
   <app-button
     [title]="'Add task'"
     [disabled]="!textValue().trim()"
-    (clickEvent)="add(textValue())"
+    (buttonClick)="add(textValue())"
   />
 </div>
