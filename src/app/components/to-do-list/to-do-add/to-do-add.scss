@@ -1,16 +1,7 @@
 .container {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   gap: 4px;
   width: 100%;
-  padding: 20px 0;
-
-  .button {
-    &.button--add {
-      background: green;
-    }
-    &[disabled] {
-      opacity: 0.5;
-    }
-  }
 }

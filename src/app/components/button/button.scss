@@ -1,0 +1,30 @@
+button {
+  border: none;
+  border-radius: 2px;
+
+  display: flex;
+  align-items: center;
+  text-wrap: nowrap;
+  font-family: Roboto,sans-serif;
+  padding: 5px;
+
+  cursor: pointer;
+
+  background: lightgrey;
+
+  &:hover:not(:disabled) {
+    background: #dddddd;
+  }
+
+  &:active:not(:disabled) {
+    color: #ffffff;
+  }
+
+  &:focus {
+    background: #eeeeee;
+  }
+
+  &:disabled {
+    opacity: 0.8;
+  }
+}
