@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit, signal} from '@angular/core';
 import {ToDoItem} from './to-do-item/to-do-item';
 import {ToDoAdd} from './to-do-add/to-do-add';
-import {Task} from '../../data/task';
+import {Task, TaskBase} from '../../data/task';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {timer} from 'rxjs';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
@@ -24,16 +24,19 @@ export class ToDoList implements OnInit {
     [
       {
         id: 1,
-        text: "Нужно что-то сделать (1)...",
+        title: "Нужно что-то сделать (1)...",
+        description: "Какая-то полезная информация (1)",
       },
       {
         id: 2,
-        text: "Нужно что-то сделать (2)...",
+        title: "Нужно что-то сделать (2)...",
+        description: "Какая-то полезная информация (2)",
       },
     ],
   );
 
-  public isLoading = signal<boolean>(true);
+  isLoading = signal<boolean>(true);
+  selectedId = signal<number|null>(null);
 
   private destroyRef = inject(DestroyRef);
 
@@ -47,10 +50,20 @@ export class ToDoList implements OnInit {
     this.tasks.update((tasks) => tasks.filter(element => element.id !== task.id));
   }
 
-  addItem(text: string): void {
-    if (text.trim().length) {
+  addItem(task: TaskBase): void {
+    if (task.title.trim().length) {
       const maxId: number = Math.max(0,...this.tasks().map(obj => obj.id));
-      this.tasks.update((tasks) => [...tasks, {id: maxId + 1, text}]);
+      this.tasks.update((tasks) => [...tasks, {id: maxId + 1, title: task.title.trim(), description: task.description}]);
     }
+  }
+  setSelectedId(id: number): void {
+    this.selectedId.update(()=> id);
+  }
+
+  getDescription() {
+    if (this.selectedId()) {
+      return this.tasks().find(element=> element.id === this.selectedId())?.description;
+    }
+    return '';
   }
 }
