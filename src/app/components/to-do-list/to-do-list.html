@@ -2,16 +2,27 @@
 
   <h1>Todo List</h1>
 
-  <ul>
-    @for (task of tasks(); track task.id) {
-      <li>
-        <app-to-do-item
-          [task]="task"
-          (deleteItem)="deleteItem($event)"
-        />
-      </li>
-    }
-  </ul>
+  <div class="tasks-wrapper">
+    <div class="tasks-list">
+      <ul>
+        @for (task of tasks(); track task.id) {
+          <li [class.selected]="task.id === selectedId()">
+            <app-to-do-item
+              [selected] = "selectedId() === task.id"
+              [task]="task"
+              (deleteItem)="deleteItem($event)"
+              (selectedId)="setSelectedId($event)"
+            />
+          </li>
+        }
+      </ul>
+    </div>
+    <div class="selected-task">
+      {{ getDescription() }}
+    </div>
+
+  </div>
+
 
   <app-to-do-add (addItem)="addItem($event)"/>
 } @else {
