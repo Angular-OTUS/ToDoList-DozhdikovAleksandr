@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, DestroyRef, inject, OnInit, signal} from '@angular/core';
 import {ToDoItem} from './to-do-item/to-do-item';
 import {ToDoAdd} from './to-do-add/to-do-add';
 import {Task, TaskBase} from '../../data/task';
@@ -37,6 +37,13 @@ export class ToDoList implements OnInit {
 
   isLoading = signal<boolean>(true);
   selectedId = signal<number|null>(null);
+  selectedDescription = computed<string>(()=> {
+    const id = this.selectedId();
+    if (id) {
+      return this.tasks().find(element=> element.id === id)?.description ?? '';
+    }
+    return '';
+  })
 
   private destroyRef = inject(DestroyRef);
 
@@ -57,13 +64,7 @@ export class ToDoList implements OnInit {
     }
   }
   setSelectedId(id: number): void {
-    this.selectedId.update(()=> id);
+    this.selectedId.set(id);
   }
 
-  getDescription() {
-    if (this.selectedId()) {
-      return this.tasks().find(element=> element.id === this.selectedId())?.description;
-    }
-    return '';
-  }
 }

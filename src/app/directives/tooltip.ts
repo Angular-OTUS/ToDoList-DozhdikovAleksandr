@@ -1,4 +1,4 @@
-import {Directive, ElementRef, inject, input, Renderer2} from '@angular/core';
+import {Directive, ElementRef, inject, input, OnDestroy, Renderer2} from '@angular/core';
 
 
 @Directive( {
@@ -10,20 +10,13 @@ import {Directive, ElementRef, inject, input, Renderer2} from '@angular/core';
     '(blur)': 'hide()',
   },
 })
-export class TooltipDirective {
+export class TooltipDirective implements OnDestroy {
   private readonly el = inject(ElementRef);
   private readonly renderer = inject(Renderer2);
   private tooltipElement: HTMLElement | null = null;
 
   readonly appTooltip = input<string>('')
   show(): void {
-
-    /**
-     * В примере, который был на лекции есть эта проверка.
-     * А для чего проверяем this.tooltipElement ?
-     * Вроде в консоли всегда null.
-     */
-    console.log(this.tooltipElement);
 
     if (!this.appTooltip() || this.tooltipElement) return;
 
@@ -46,11 +39,6 @@ export class TooltipDirective {
 
   private setPosition() {
 
-    /**
-     * В примере, который был на лекции есть эта проверка.
-     * А для чего она ?
-     */
-
     if (!this.tooltipElement) return;
 
     const hostPos = this.el.nativeElement.getBoundingClientRect();
@@ -61,5 +49,9 @@ export class TooltipDirective {
 
     this.renderer.setStyle(this.tooltipElement, 'top', `${top + window.scrollY}px`);
     this.renderer.setStyle(this.tooltipElement, 'left', `${left + window.scrollX}px`);
+  }
+
+  ngOnDestroy() {
+    this.hide();
   }
 }

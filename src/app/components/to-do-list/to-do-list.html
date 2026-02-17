@@ -6,7 +6,7 @@
     <div class="tasks-list">
       <ul>
         @for (task of tasks(); track task.id) {
-          <li [class.selected]="task.id === selectedId()">
+          <li>
             <app-to-do-item
               [selected] = "selectedId() === task.id"
               [task]="task"
@@ -18,7 +18,7 @@
       </ul>
     </div>
     <div class="selected-task">
-      {{ getDescription() }}
+      {{ selectedDescription() }}
     </div>
 
   </div>
