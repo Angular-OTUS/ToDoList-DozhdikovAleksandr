@@ -2,8 +2,8 @@
   tabindex="0"
   class="item"
   [class.selected]="selected()"
-  (click)="selectedId.emit(task().id)"
-  (keyup.enter)="selectedId.emit(task().id)"
+  (click)="selectedTask.emit(task().id)"
+  (keyup.enter)="selectedTask.emit(task().id)"
   appTooltip="Select task"
 >
   <div class="title">

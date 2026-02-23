@@ -55,6 +55,7 @@ export class ToDoList implements OnInit {
 
   deleteItem(task: Task): void {
     this.tasks.update((tasks) => tasks.filter(element => element.id !== task.id));
+    this.selectedId.set(null);
   }
 
   addItem(task: TaskBase): void {

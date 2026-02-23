@@ -18,5 +18,5 @@ export class ToDoItem {
   readonly selected = input.required<boolean>();
   readonly task = input.required<Task>();
   readonly deleteItem = output<Task>();
-  readonly selectedId = output<number>();
+  readonly selectedTask = output<number>();
 }
