@@ -1,9 +1,17 @@
-<div class="item">
+<div
+  tabindex="0"
+  class="item"
+  [class.selected]="selected()"
+  (click)="selectedTask.emit(task().id)"
+  (keyup.enter)="selectedTask.emit(task().id)"
+  appTooltip="Select task"
+>
   <div class="title">
-    {{ task().text }}
+    {{ task().title }}
   </div>
   <app-button
     [title]="'Delete'"
     (buttonClick)="deleteItem.emit(task());"
+    appTooltip="Delete task"
   />
 </div>

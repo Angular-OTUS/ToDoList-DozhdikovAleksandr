@@ -4,16 +4,35 @@
   margin: 20px;
   min-width: 576px;
 
-  ul {
+  .tasks-wrapper {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding-inline-start: 0;
+    gap: 20px;
+    width: 100%;
+    justify-content: space-between;
 
-    li {
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
+    .tasks-list {
+      width: 100%;
+      ul {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding-inline-start: 0;
+
+        li {
+          list-style-type: none;
+          margin: 0;
+          padding: 0;
+        }
+      }
+    }
+
+    .selected-task {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 400px;
+      border: 1px lightgrey solid;
+      padding: 20px;
     }
   }
 
