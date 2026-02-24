@@ -24,10 +24,5 @@ export class Toast {
   readonly TOAST_TYPE_NOTICE = TOAST_TYPE_NOTICE;
   */
 
-  private toastService = inject(ToastService);
-
-/*  constructor(
-    public toastService: ToastService
-  ) {
-  }*/
+  public toastService = inject(ToastService);
 }
