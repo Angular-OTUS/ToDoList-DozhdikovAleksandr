@@ -5,6 +5,9 @@ import {Task, TaskBase} from '../../data/task';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {timer} from 'rxjs';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {TasksService} from '../../services/tasks/tasks';
+import {ToastService} from '../../services/toasts/toast';
+import {TOAST_TYPE_CRITICAL, TOAST_TYPE_INFO, TOAST_TYPE_NOTICE} from '../../data/toast';
 
 @Component({
   selector: 'app-to-do-list',
@@ -20,23 +23,14 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 export class ToDoList implements OnInit {
 
-  public tasks = signal<Task[]>(
-    [
-      {
-        id: 1,
-        title: "Нужно что-то сделать (1)...",
-        description: "Какая-то полезная информация (1)",
-      },
-      {
-        id: 2,
-        title: "Нужно что-то сделать (2)...",
-        description: "Какая-то полезная информация (2)",
-      },
-    ],
-  );
+  readonly tasksService = inject(TasksService);
+  readonly toastService = inject(ToastService);
+
+  public tasks = signal<Task[]>([]);
 
   isLoading = signal<boolean>(true);
   selectedId = signal<number|null>(null);
+  editModeTaskId = signal<number|null>(null);
   selectedDescription = computed<string>(()=> {
     const id = this.selectedId();
     if (id) {
@@ -51,21 +45,32 @@ export class ToDoList implements OnInit {
     timer(500).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.isLoading.set(false);
     });
+    this.tasks.set(this.tasksService.getTasks());
   }
 
   deleteItem(task: Task): void {
-    this.tasks.update((tasks) => tasks.filter(element => element.id !== task.id));
+    this.tasks.update(()=> this.tasksService.deleteItem(task));
     this.selectedId.set(null);
+    this.toastService.showToast('Удалена задача "' + task.title + '"', TOAST_TYPE_CRITICAL);
   }
 
   addItem(task: TaskBase): void {
-    if (task.title.trim().length) {
-      const maxId: number = Math.max(0,...this.tasks().map(obj => obj.id));
-      this.tasks.update((tasks) => [...tasks, {id: maxId + 1, title: task.title.trim(), description: task.description}]);
-    }
-  }
-  setSelectedId(id: number): void {
-    this.selectedId.set(id);
+    this.tasks.update(() => this.tasksService.addItem(task));
+    this.toastService.showToast('Добавлена задача "' + task.title + '"', TOAST_TYPE_INFO);
   }
 
+  updateItem(task: Task): void {
+    this.tasks.update(()=> this.tasksService.updateItem(task));
+    this.editModeTaskId.set(null);
+    this.toastService.showToast('Изменена задача "' + task.title + '"', TOAST_TYPE_NOTICE);
+  }
+
+  setSelectedId(id: number): void {
+    this.selectedId.set(id);
+    this.editModeTaskId.set(null);
+  }
+
+  setEditModeTaskId(id: number|null): void {
+    this.editModeTaskId.set(id);
+  }
 }
