@@ -9,9 +9,12 @@
           <li>
             <app-to-do-item
               [selected] = "selectedId() === task.id"
+              [editMode] = "editModeTaskId() === task.id"
               [task]="task"
               (deleteItem)="deleteItem($event)"
+              (updateItem)="updateItem($event)"
               (selectedTask)="setSelectedId($event)"
+              (editModeTask)="setEditModeTaskId($event)"
             />
           </li>
         }
@@ -22,7 +25,6 @@
     </div>
 
   </div>
-
 
   <app-to-do-add (addItem)="addItem($event)"/>
 } @else {

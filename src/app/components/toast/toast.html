@@ -1,0 +1,26 @@
+<div class="toasts">
+
+  @for (toast of toastService.toasts(); track toast.id) {
+
+    <!--
+      Не понял, как лучше.
+      Вроде бы говорили, что [ngClass] устаревшее, и лучше [clsss.info].
+
+      [class.info]="TOAST_TYPE_INFO === toast.type"
+      [class.notice]="TOAST_TYPE_NOTICE === toast.type"
+      [class.critical]="TOAST_TYPE_CRITICAL === toast.type"
+
+      Но c [ngClass] меньше буков получилось.
+
+      -->
+
+    <div
+      class="toast"
+      [ngClass]="toast.type"
+    >
+      {{ toast.text }}
+    </div>
+  }
+
+
+</div>

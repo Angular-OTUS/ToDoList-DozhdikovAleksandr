@@ -1,0 +1,23 @@
+.toasts {
+  position: absolute;
+  right: 10px;
+
+  .toast {
+    width: 200px;
+    margin-top: 10px;
+    padding: 20px;
+    border-radius: 4px;
+
+    &.info {
+      background: darkseagreen;
+    };
+
+    &.notice {
+      background: cadetblue;
+    };
+
+    &.critical {
+      background: rosybrown;
+    };
+  }
+}

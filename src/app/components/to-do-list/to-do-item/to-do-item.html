@@ -2,16 +2,32 @@
   tabindex="0"
   class="item"
   [class.selected]="selected()"
-  (click)="selectedTask.emit(task().id)"
-  (keyup.enter)="selectedTask.emit(task().id)"
+  (dblclick)="onEdit(task().id)"
+  (click)="setSelectedTask(task())"
+  (keyup.enter)="setSelectedTask(task())"
   appTooltip="Select task"
 >
-  <div class="title">
-    {{ task().title }}
-  </div>
-  <app-button
-    [title]="'Delete'"
-    (buttonClick)="deleteItem.emit(task());"
-    appTooltip="Delete task"
-  />
+
+    @if(editMode()) {
+      <div class="title">
+        <input
+          #editInput
+          type="text"
+          [(ngModel)]="task().title"
+          class="edit-title"
+        >
+      </div>
+      <app-button
+        [title]="'Save'"
+        (buttonClick)="updateItem.emit(task());"
+        appTooltip="Save"
+      />
+    } @else {
+        {{ task().title }}
+        <app-button
+          [title]="'Delete'"
+          (buttonClick)="deleteItem.emit(task());"
+          appTooltip="Delete task"
+        />
+    }
 </div>
