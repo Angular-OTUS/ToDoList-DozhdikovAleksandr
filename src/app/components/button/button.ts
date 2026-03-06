@@ -7,7 +7,6 @@ import {ChangeDetectionStrategy, Component, input, output} from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Button {
-  title = input.required<string>();
   disabled = input<boolean>(false);
   buttonClick= output<void>();
 }

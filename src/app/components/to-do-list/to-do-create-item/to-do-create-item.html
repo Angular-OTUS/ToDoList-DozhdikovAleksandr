@@ -1,0 +1,25 @@
+<div class="container">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div>
+      <div>
+        <mat-form-field>
+          <mat-label>Title</mat-label>
+          <input matInput type="text" formControlName="title" />
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field>
+          <mat-label>Description</mat-label>
+          <textarea matInput formControlName="description"></textarea>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <button
+      type="submit"
+      appTooltip="Add task"
+    >
+      Add task
+    </button>
+  </form>
+</div>

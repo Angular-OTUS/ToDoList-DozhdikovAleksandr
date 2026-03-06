@@ -1,0 +1,15 @@
+.filters {
+  display: flex;
+  gap: 10px;
+  .filter {
+    &:hover {
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    &.active {
+      font-weight: 500;
+      color: blueviolet;
+    }
+  }
+}

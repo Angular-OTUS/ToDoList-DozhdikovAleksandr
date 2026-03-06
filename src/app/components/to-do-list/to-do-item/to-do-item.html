@@ -8,11 +8,18 @@
   appTooltip="Select task"
 >
 
+    <div class="status">
+      <input
+        type="checkbox"
+        (click)="setStatus($event)"
+        [checked]="status()"
+      />
+    </div>
+
     @if(editMode()) {
       <div class="title">
         <input
           #editInput
-          type="text"
           [(ngModel)]="task().title"
           class="edit-title"
         >
@@ -21,13 +28,19 @@
         [title]="'Save'"
         (buttonClick)="updateItem.emit(task());"
         appTooltip="Save"
-      />
+      >
+        Save
+      </app-button>
     } @else {
+      <div class="title">
         {{ task().title }}
+      </div>
+
         <app-button
-          [title]="'Delete'"
           (buttonClick)="deleteItem.emit(task());"
           appTooltip="Delete task"
-        />
+        >
+          Delete
+        </app-button>
     }
 </div>

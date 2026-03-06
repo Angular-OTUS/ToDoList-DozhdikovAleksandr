@@ -1,29 +1,34 @@
 import {ChangeDetectionStrategy, Component, output, signal} from '@angular/core';
-import {FormsModule} from '@angular/forms';
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
-import {Button} from '../../button/button';
-import {TaskBase} from '../../../data/task';
+import {TASK_STATUS_IN_PROGRESS, TaskBase} from '../../../data/task';
 import {TooltipDirective} from '../../../directives/tooltip';
 
 @Component({
-  selector: 'app-to-do-add',
+  selector: 'app-to-do-create-item',
   imports: [
     FormsModule,
     MatInput,
     MatFormField,
-    Button,
     MatLabel,
     TooltipDirective,
+    ReactiveFormsModule,
   ],
-  templateUrl: './to-do-add.html',
-  styleUrl: './to-do-add.scss',
+  templateUrl: './to-do-create-item.html',
+  styleUrl: './to-do-create-item.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ToDoAdd {
+export class ToDoCreateItem {
 
   task = signal<TaskBase>(this.emptyTask());
 
   readonly addItem = output<TaskBase>();
+
+  form = new FormGroup({
+      title: new FormControl('',[Validators.required]),
+      description: new FormControl(''),
+    }
+  );
 
   public add(task: TaskBase): void {
     if (!task.title.length) {
@@ -37,6 +42,12 @@ export class ToDoAdd {
     return {
       title: '',
       description: '',
+      status: TASK_STATUS_IN_PROGRESS,
     }
+  }
+
+  onSubmit() {
+    this.task.set({title: this.form.value.title?? '', description: this.form.value.description ?? '', status: TASK_STATUS_IN_PROGRESS});
+    this.add(this.task());
   }
 }

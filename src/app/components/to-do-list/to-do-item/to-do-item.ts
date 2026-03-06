@@ -1,5 +1,13 @@
-import {ChangeDetectionStrategy, Component, ElementRef, input, output, ViewChild} from '@angular/core';
-import {Task} from '../../../data/task';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  ElementRef,
+  input,
+  output,
+  ViewChild
+} from '@angular/core';
+import {Task, TASK_STATUS_COMPLETED, TASK_STATUS_IN_PROGRESS} from '../../../data/task';
 import {Button} from '../../button/button';
 import {TooltipDirective} from '../../../directives/tooltip';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -26,6 +34,10 @@ export class ToDoItem {
   readonly selectedTask = output<number>();
   readonly editModeTask = output<number|null>();
 
+  status = computed<boolean>(()=> {
+    return TASK_STATUS_COMPLETED === this.task().status
+  })
+
   @ViewChild('editInput') editInput?: ElementRef<HTMLInputElement>;
 
   setSelectedTask(task: Task) {
@@ -45,5 +57,11 @@ export class ToDoItem {
     setTimeout(() => {
       this.editInput?.nativeElement.focus();
     });
+  }
+
+  setStatus(event: Event) {
+    event.stopPropagation();
+    this.task().status = this.status() ? TASK_STATUS_IN_PROGRESS : TASK_STATUS_COMPLETED;
+    this.updateItem.emit(this.task());
   }
 }
