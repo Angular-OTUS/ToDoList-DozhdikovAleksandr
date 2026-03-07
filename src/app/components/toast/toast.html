@@ -1,0 +1,15 @@
+<div class="toasts">
+
+  @for (toast of toastService.toasts(); track toast.id) {
+    <div
+      class="toast"
+      [class.info]="TOAST_TYPE_INFO === toast.type"
+      [class.notice]="TOAST_TYPE_NOTICE === toast.type"
+      [class.critical]="TOAST_TYPE_CRITICAL === toast.type"
+    >
+      {{ toast.text }}
+    </div>
+  }
+
+
+</div>

@@ -4,12 +4,12 @@ button {
 
   display: flex;
   align-items: center;
+  justify-content: center;
   text-wrap: nowrap;
   font-family: Roboto,sans-serif;
   padding: 5px;
-
+  min-width: 50px;
   cursor: pointer;
-
   background: lightgrey;
 
   &:hover:not(:disabled) {

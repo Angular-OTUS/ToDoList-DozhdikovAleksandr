@@ -18,4 +18,14 @@
   &.selected {
     background: cadetblue;
   }
+
+  .title {
+    width: 100%;
+
+    .edit-title {
+      width: 80%;
+      border: 0;
+      padding: 5px;
+    }
+  }
 }

@@ -5,6 +5,9 @@ import {Task, TaskBase} from '../../data/task';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {timer} from 'rxjs';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {TasksService} from '../../services/tasks/tasks';
+import {ToastService} from '../../services/toasts/toast';
+import {TOAST_TYPE_CRITICAL, TOAST_TYPE_INFO, TOAST_TYPE_NOTICE} from '../../data/toast';
 
 @Component({
   selector: 'app-to-do-list',
@@ -20,52 +23,66 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 export class ToDoList implements OnInit {
 
-  public tasks = signal<Task[]>(
-    [
-      {
-        id: 1,
-        title: "Нужно что-то сделать (1)...",
-        description: "Какая-то полезная информация (1)",
-      },
-      {
-        id: 2,
-        title: "Нужно что-то сделать (2)...",
-        description: "Какая-то полезная информация (2)",
-      },
-    ],
-  );
+  readonly tasksService = inject(TasksService);
+  readonly toastService = inject(ToastService);
+  private destroyRef = inject(DestroyRef);
 
-  isLoading = signal<boolean>(true);
-  selectedId = signal<number|null>(null);
+  private _tasks = signal<Task[]>([]);
+  tasks = this._tasks.asReadonly();
+
+  private _isLoading = signal<boolean>(true);
+  isLoading = this._isLoading.asReadonly();
+
+  private _selectedId = signal<number|null>(null);
+  selectedId = this._selectedId.asReadonly();
+
+  private _editModeTaskId = signal<number|null>(null);
+  editModeTaskId = this._editModeTaskId.asReadonly();
+
   selectedDescription = computed<string>(()=> {
-    const id = this.selectedId();
+    const id = this._selectedId();
     if (id) {
-      return this.tasks().find(element=> element.id === id)?.description ?? '';
+      return this._tasks().find(element=> element.id === id)?.description ?? '';
     }
     return '';
   })
 
-  private destroyRef = inject(DestroyRef);
-
   ngOnInit() {
     timer(500).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
-      this.isLoading.set(false);
+      this._isLoading.set(false);
     });
+    this._tasks.set(this.tasksService.getTasks());
   }
 
   deleteItem(task: Task): void {
-    this.tasks.update((tasks) => tasks.filter(element => element.id !== task.id));
-    this.selectedId.set(null);
+    this._tasks.update(()=> this.tasksService.deleteTask(task));
+    this._selectedId.set(null);
+    this.toastService.showToast('Удалена задача "' + task.title + '"', TOAST_TYPE_CRITICAL)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe();
   }
 
   addItem(task: TaskBase): void {
-    if (task.title.trim().length) {
-      const maxId: number = Math.max(0,...this.tasks().map(obj => obj.id));
-      this.tasks.update((tasks) => [...tasks, {id: maxId + 1, title: task.title.trim(), description: task.description}]);
-    }
-  }
-  setSelectedId(id: number): void {
-    this.selectedId.set(id);
+    this._tasks.update(() => this.tasksService.addTask(task));
+    this.toastService.showToast('Добавлена задача "' + task.title + '"', TOAST_TYPE_INFO)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe();
   }
 
+  updateItem(task: Task): void {
+    this._tasks.update(()=> this.tasksService.updateTask(task));
+    this._editModeTaskId.set(null);
+    this.toastService.showToast('Изменена задача "' + task.title + '"', TOAST_TYPE_NOTICE)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe();
+  }
+
+  setSelectedId(id: number): void {
+    this._selectedId.set(id);
+    this._editModeTaskId.set(null);
+  }
+
+  setEditModeTaskId(id: number|null): void {
+    this._editModeTaskId.set(id);
+  }
 }
