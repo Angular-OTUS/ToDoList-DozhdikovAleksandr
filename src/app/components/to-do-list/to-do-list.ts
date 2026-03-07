@@ -25,52 +25,64 @@ export class ToDoList implements OnInit {
 
   readonly tasksService = inject(TasksService);
   readonly toastService = inject(ToastService);
+  private destroyRef = inject(DestroyRef);
 
-  public tasks = signal<Task[]>([]);
+  private _tasks = signal<Task[]>([]);
+  tasks = this._tasks.asReadonly();
 
-  isLoading = signal<boolean>(true);
-  selectedId = signal<number|null>(null);
-  editModeTaskId = signal<number|null>(null);
+  private _isLoading = signal<boolean>(true);
+  isLoading = this._isLoading.asReadonly();
+
+  private _selectedId = signal<number|null>(null);
+  selectedId = this._selectedId.asReadonly();
+
+  private _editModeTaskId = signal<number|null>(null);
+  editModeTaskId = this._editModeTaskId.asReadonly();
+
   selectedDescription = computed<string>(()=> {
-    const id = this.selectedId();
+    const id = this._selectedId();
     if (id) {
-      return this.tasks().find(element=> element.id === id)?.description ?? '';
+      return this._tasks().find(element=> element.id === id)?.description ?? '';
     }
     return '';
   })
 
-  private destroyRef = inject(DestroyRef);
-
   ngOnInit() {
     timer(500).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
-      this.isLoading.set(false);
+      this._isLoading.set(false);
     });
-    this.tasks.set(this.tasksService.getTasks());
+    this._tasks.set(this.tasksService.getTasks());
   }
 
   deleteItem(task: Task): void {
-    this.tasks.update(()=> this.tasksService.deleteItem(task));
-    this.selectedId.set(null);
-    this.toastService.showToast('Удалена задача "' + task.title + '"', TOAST_TYPE_CRITICAL);
+    this._tasks.update(()=> this.tasksService.deleteTask(task));
+    this._selectedId.set(null);
+    this.toastService.showToast('Удалена задача "' + task.title + '"', TOAST_TYPE_CRITICAL)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe();
   }
 
   addItem(task: TaskBase): void {
-    this.tasks.update(() => this.tasksService.addItem(task));
-    this.toastService.showToast('Добавлена задача "' + task.title + '"', TOAST_TYPE_INFO);
+    this._tasks.update(() => this.tasksService.addTask(task));
+    this.toastService.showToast('Добавлена задача "' + task.title + '"', TOAST_TYPE_INFO)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe();
   }
 
   updateItem(task: Task): void {
-    this.tasks.update(()=> this.tasksService.updateItem(task));
-    this.editModeTaskId.set(null);
-    this.toastService.showToast('Изменена задача "' + task.title + '"', TOAST_TYPE_NOTICE);
+    this._tasks.update(()=> this.tasksService.updateTask(task));
+    this._editModeTaskId.set(null);
+    this.toastService.showToast('Изменена задача "' + task.title + '"', TOAST_TYPE_NOTICE)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe();
   }
 
   setSelectedId(id: number): void {
-    this.selectedId.set(id);
-    this.editModeTaskId.set(null);
+    this._selectedId.set(id);
+    this._editModeTaskId.set(null);
   }
 
   setEditModeTaskId(id: number|null): void {
-    this.editModeTaskId.set(id);
+    this._editModeTaskId.set(id);
   }
 }

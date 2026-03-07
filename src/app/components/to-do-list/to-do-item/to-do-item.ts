@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, ElementRef, input, output, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, Component, effect, ElementRef, input, output, viewChild} from '@angular/core';
 import {Task} from '../../../data/task';
 import {Button} from '../../button/button';
 import {TooltipDirective} from '../../../directives/tooltip';
@@ -26,7 +26,11 @@ export class ToDoItem {
   readonly selectedTask = output<number>();
   readonly editModeTask = output<number|null>();
 
-  @ViewChild('editInput') editInput?: ElementRef<HTMLInputElement>;
+  editInput = viewChild<ElementRef<HTMLInputElement>>('editInput');
+
+  focusEffect = effect(() => {
+    this.editInput()?.nativeElement.focus();
+  });
 
   setSelectedTask(task: Task) {
     if (!this.editMode()) {
@@ -34,16 +38,7 @@ export class ToDoItem {
     }
   }
 
-  /**
-   * Когда делал отправку сразу в шаблоне (dblclick)="editModeTask.emit(task().id)" то фокус не выставлялся на <input>
-   * Жпт насоветовал вынести в отдельный метод, с задержкой и установкой фокуса.
-   */
   onEdit(id: number) {
     this.editModeTask.emit(id);
-
-    // даём Angular перерисовать DOM
-    setTimeout(() => {
-      this.editInput?.nativeElement.focus();
-    });
   }
 }

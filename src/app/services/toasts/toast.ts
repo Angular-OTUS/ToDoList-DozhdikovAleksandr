@@ -1,27 +1,23 @@
-import {DestroyRef, inject, Injectable, signal} from '@angular/core';
+import {Injectable, signal} from '@angular/core';
 import {Toast, TOAST_TYPE} from '../../data/toast';
-import {timer} from 'rxjs';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {tap, timer} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ToastService {
 
-  private destroyRef = inject(DestroyRef);
+  private _toasts = signal<Toast[]>([]);
+  readonly toasts = this._toasts.asReadonly();
 
-  toasts = signal<Toast[]>([]);
+  showToast(text: string, type: TOAST_TYPE) {
+    const id: number = Math.max(0,...this._toasts().map(obj => obj.id)) + 1;
+    this._toasts.set([...this._toasts(), {id: id, type: type, text: text}]);
 
-  showToast(text: string, type: TOAST_TYPE): void {
-    const id: number = Math.max(0,...this.toasts().map(obj => obj.id)) + 1;
-    this.toasts.set([...this.toasts(), {id: id, type: type, text: text}]);
-
-    timer(10000).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
-      this.hideToast(id);
-    });
+    return timer(10000).pipe(tap(() => this.hideToast(id)));
   }
 
   hideToast(id: number): void {
-    this.toasts.update(()=> this.toasts().filter(element => element.id !== id));
+    this._toasts.update(()=> this._toasts().filter(element => element.id !== id));
   }
 }

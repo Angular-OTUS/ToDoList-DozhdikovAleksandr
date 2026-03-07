@@ -23,12 +23,12 @@ export class TasksService {
     return this.tasks;
   }
 
-  deleteItem(task: Task): Task[] {
+  deleteTask(task: Task): Task[] {
     this.tasks = this.tasks.filter(element => element.id !== task.id);
     return this.tasks;
   }
 
-  addItem(task: TaskBase): Task[] {
+  addTask(task: TaskBase): Task[] {
     if (task.title.trim().length) {
       const maxId: number = Math.max(0,...this.tasks.map(obj => obj.id));
       this.tasks = [...this.tasks, {id: maxId + 1, title: task.title.trim(), description: task.description}];
@@ -36,7 +36,7 @@ export class TasksService {
     return this.tasks;
   }
 
-  updateItem(task: Task): Task[] {
+  updateTask(task: Task): Task[] {
     this.tasks = this.tasks.map(item=> {
       if (item.id === task.id) {
         return task;
