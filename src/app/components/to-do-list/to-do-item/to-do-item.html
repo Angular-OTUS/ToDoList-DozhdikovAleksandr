@@ -26,6 +26,7 @@
       </div>
       <app-button
         [title]="'Save'"
+        [disabled]="!task().title.trim()"
         (buttonClick)="updateItem.emit(task());"
         appTooltip="Save"
       >
