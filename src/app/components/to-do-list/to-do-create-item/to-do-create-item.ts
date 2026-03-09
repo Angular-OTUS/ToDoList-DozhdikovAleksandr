@@ -20,20 +20,17 @@ import {TooltipDirective} from '../../../directives/tooltip';
 })
 export class ToDoCreateItem {
 
-  task = signal<TaskBase>(this.emptyTask());
+  readonly task = signal<TaskBase>(this.emptyTask());
 
   readonly addItem = output<TaskBase>();
 
   form = new FormGroup({
-      title: new FormControl('',[Validators.required]),
+      title: new FormControl('', [Validators.required]),
       description: new FormControl(''),
     }
   );
 
   public add(task: TaskBase): void {
-    if (!task.title.length) {
-      return;
-    }
     this.addItem.emit(task);
     this.task.set(this.emptyTask());
   }
@@ -46,8 +43,15 @@ export class ToDoCreateItem {
     }
   }
 
-  onSubmit() {
-    this.task.set({title: this.form.value.title?? '', description: this.form.value.description ?? '', status: TASK_STATUS_IN_PROGRESS});
+  onSubmit(): void
+  {
+    const task: TaskBase = {
+      title: this.form.value.title?? '',
+      description: this.form.value.description ?? '',
+      status: TASK_STATUS_IN_PROGRESS
+    }
+
+    this.task.set(task);
     this.add(this.task());
   }
 }

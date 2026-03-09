@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, computed, DestroyRef, inject, OnInit, signal} from '@angular/core';
 import {ToDoItem} from './to-do-item/to-do-item';
 import {Task, TaskBase} from '../../data/task';
-import {timer} from 'rxjs';
+import {map, switchMap, tap, timer} from 'rxjs';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {TasksService} from '../../services/tasks/tasks';
 import {ToastService} from '../../services/toasts/toast';
@@ -51,11 +51,7 @@ export class ToDoList implements OnInit {
     return '';
   })
 
-  constructor(
-    private route: ActivatedRoute,
-  ) {
-  }
-
+  private route = inject(ActivatedRoute);
   private apiTasksService = inject(ApiTasksService);
 
   ngOnInit() {
@@ -75,17 +71,23 @@ export class ToDoList implements OnInit {
   }
 
   getTasks(filters?: string[]) {
-    this.apiTasksService.getTasks().subscribe(
-      response => {
-        timer(500).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
-          this._isLoading.set(false);
-        });
-        this._tasks.set(response.filter(
+    this.apiTasksService.getTasks().pipe(
+      switchMap(response =>
+        timer(500).pipe(
+          tap(() => this._isLoading.set(false)),
+          map(() => response)
+        )
+      ),
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(response => {
+      this._tasks.set(
+        response.filter(
           item => !filters || !filters.length || filters.includes(item.status)
-        ));
-      }
-    );
+        )
+      );
+    });
   }
+
 
   setFiltersFromUrl() {
     const params = this.route.snapshot.queryParams;
@@ -95,7 +97,9 @@ export class ToDoList implements OnInit {
 
   deleteItem(task: Task): void {
 
-    this.apiTasksService.deleteTask(task).subscribe(
+    this.apiTasksService.deleteTask(task)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(
       response => {
         this._tasks.set(this.tasks().filter(element => element.id !== task.id));
         this.toastService.showToast('Удалена задача "' + task.title + '"', TOAST_TYPE_NOTICE);
@@ -104,7 +108,9 @@ export class ToDoList implements OnInit {
   }
 
   addItem(task: TaskBase): void {
-    this.apiTasksService.addTask(task).subscribe(
+    this.apiTasksService.addTask(task)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(
       response => {
         this._tasks.set([...this.tasks(), response]);
         this.toastService.showToast('Добавлена задача "' + task.title + '"', TOAST_TYPE_INFO);
@@ -113,7 +119,9 @@ export class ToDoList implements OnInit {
   }
 
   updateItem(task: Task): void {
-    this.apiTasksService.updateTask(task).subscribe(
+    this.apiTasksService.updateTask(task)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(
       response => {
         this.tasks().map(
           item => {
@@ -123,6 +131,7 @@ export class ToDoList implements OnInit {
             return item;
           }
         );
+        this._editModeTaskId.set(null);
         this.toastService.showToast('Изменена задача "' + task.title + '"', TOAST_TYPE_NOTICE);
       }
     );

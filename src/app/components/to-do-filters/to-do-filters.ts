@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit, signal} from '@angular/core';
+import {Component, computed, inject, OnInit, signal} from '@angular/core';
 import {Filter, TASK_STATUS_LIST} from '../../data/task';
 import {ActivatedRoute, Router} from '@angular/router';
 
@@ -11,11 +11,8 @@ export class ToDoFilters implements OnInit {
 
   filters = signal<Filter[]>(TASK_STATUS_LIST);
 
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-  ) {
-  }
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
   ngOnInit() {
     this.getQueryFilters();
@@ -35,9 +32,9 @@ export class ToDoFilters implements OnInit {
     this.setQueryFilters();
   }
 
-  isActiveFilters() {
-    return this.filters().filter(item => item.selected).length;
-  }
+  isActiveFilters = computed<boolean>(()=> {
+    return this.filters().filter(item => item.selected).length > 0;
+  })
 
   clearFilters() {
     this.filters.set([...this.filters().map(item => {
@@ -49,7 +46,13 @@ export class ToDoFilters implements OnInit {
 
   setQueryFilters() {
     let queryFilters: string[] = [];
-    this.filters().forEach((filter) => {if (filter.selected) {queryFilters = [...queryFilters, filter.id]}})
+    this.filters().forEach(
+      (filter) => {
+        if (filter.selected) {
+          queryFilters = [...queryFilters, filter.id]
+        }
+      }
+    );
     this.router.navigate([], {queryParams: {filters: queryFilters}});
   }
 
@@ -58,14 +61,14 @@ export class ToDoFilters implements OnInit {
     const queryFilters: string[] = params["filters"];
 
     if (queryFilters) {
-      this.filters().map(
+      this.filters.set([...this.filters().map(
         item => {
           if (queryFilters.includes(item.id)) {
             item.selected = true;
           }
           return item;
         }
-      );
+      )])
     }
   }
 }
