@@ -1,7 +1,17 @@
-import {ChangeDetectionStrategy, Component, input, output} from '@angular/core';
-import {Task} from '../../../data/task';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  computed,
+  ElementRef,
+  input,
+  output,
+  viewChild,
+} from '@angular/core';
+import {Task, TASK_STATUS_COMPLETED, TASK_STATUS_IN_PROGRESS} from '../../../data/task';
 import {Button} from '../../button/button';
 import {TooltipDirective} from '../../../directives/tooltip';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-to-do-item',
@@ -10,13 +20,44 @@ import {TooltipDirective} from '../../../directives/tooltip';
   imports: [
     Button,
     TooltipDirective,
+    ReactiveFormsModule,
+    FormsModule,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToDoItem {
 
   readonly selected = input.required<boolean>();
+  readonly editMode = input.required<boolean|null>();
   readonly task = input.required<Task>();
   readonly deleteItem = output<Task>();
+  readonly updateItem = output<Task>();
   readonly selectedTask = output<number>();
+  readonly editModeTask = output<number|null>();
+
+  editInput = viewChild<ElementRef<HTMLInputElement>>('editInput');
+
+  focusEffect = effect(() => {
+    this.editInput()?.nativeElement.focus();
+  });
+
+  status = computed<boolean>(()=> {
+    return TASK_STATUS_COMPLETED === this.task().status
+  })
+
+  setSelectedTask(task: Task) {
+    if (!this.editMode()) {
+      this.selectedTask.emit(task.id);
+    }
+  }
+
+  onEdit(id: number) {
+    this.editModeTask.emit(id);
+  }
+
+  setStatus(event: Event) {
+    event.stopPropagation();
+    this.task().status = this.status() ? TASK_STATUS_IN_PROGRESS : TASK_STATUS_COMPLETED;
+    this.updateItem.emit(this.task());
+  }
 }

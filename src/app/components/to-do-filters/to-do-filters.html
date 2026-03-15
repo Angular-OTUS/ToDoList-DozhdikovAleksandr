@@ -1,0 +1,18 @@
+<div class="filters">
+<button
+    class="filter"
+    (click)="clearFilters()"
+    [class.active] = "!isActiveFilters()"
+  >
+    All
+  </button>
+  @for (filter of filters(); track filter.id) {
+    <button
+      class="filter"
+      (click)="toggleFilter(filter)"
+      [class.active] = "filter.selected"
+    >
+      {{ filter.title }}
+    </button>
+  }
+</div>

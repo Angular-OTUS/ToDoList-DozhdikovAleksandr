@@ -1,1 +1,3 @@
-<button type="button" [disabled]="disabled()" (click)="buttonClick.emit()">{{ title() }}</button>
+<button type="button" [disabled]="disabled()">
+  <ng-content/>
+</button>

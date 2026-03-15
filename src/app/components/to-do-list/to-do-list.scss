@@ -24,6 +24,9 @@
           padding: 0;
         }
       }
+      .no-tasks {
+        padding: 10px 0;
+      }
     }
 
     .selected-task {
@@ -34,11 +37,5 @@
       border: 1px lightgrey solid;
       padding: 20px;
     }
-  }
-
-  .spinner {
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 }
