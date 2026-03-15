@@ -6,7 +6,7 @@ import {
   ElementRef,
   input,
   output,
-  viewChild
+  viewChild,
 } from '@angular/core';
 import {Task, TASK_STATUS_COMPLETED, TASK_STATUS_IN_PROGRESS} from '../../../data/task';
 import {Button} from '../../button/button';

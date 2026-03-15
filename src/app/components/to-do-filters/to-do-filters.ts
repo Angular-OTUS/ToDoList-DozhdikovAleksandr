@@ -25,8 +25,8 @@ export class ToDoFilters implements OnInit {
             item.selected = !item.selected;
           }
           return item;
-        }
-      )
+        },
+      ),
     );
 
     this.setQueryFilters();
@@ -51,7 +51,7 @@ export class ToDoFilters implements OnInit {
         if (filter.selected) {
           queryFilters = [...queryFilters, filter.id]
         }
-      }
+      },
     );
     this.router.navigate([], {queryParams: {filters: queryFilters}});
   }
@@ -67,7 +67,7 @@ export class ToDoFilters implements OnInit {
             item.selected = true;
           }
           return item;
-        }
+        },
       )])
     }
   }

@@ -17,7 +17,7 @@ export const TASK_STATUS_LIST: Filter[] = [
     id: TASK_STATUS_COMPLETED,
     title: 'Completed',
     selected: false,
-  }
+  },
 ];
 
 export type TASK_STATUS =

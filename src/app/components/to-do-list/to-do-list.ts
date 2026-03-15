@@ -8,7 +8,7 @@ import {ToastService} from '../../services/toasts/toast';
 import {TOAST_TYPE_INFO, TOAST_TYPE_NOTICE} from '../../data/toast';
 import {LoadingSpinner} from '../loading-spinner/loading-spinner';
 import {ToDoFilters} from '../to-do-filters/to-do-filters';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 import {ToDoCreateItem} from './to-do-create-item/to-do-create-item';
 import {ApiTasksService} from '../../services/api/api-tasks';
 
@@ -66,7 +66,7 @@ export class ToDoList implements OnInit {
      */
 
     this.route.queryParams.pipe(
-      takeUntilDestroyed(this.destroyRef)
+      takeUntilDestroyed(this.destroyRef),
     ).subscribe(() => this.setFiltersFromUrl());
   }
 
@@ -75,15 +75,15 @@ export class ToDoList implements OnInit {
       switchMap(response =>
         timer(500).pipe(
           tap(() => this._isLoading.set(false)),
-          map(() => response)
-        )
+          map(() => response),
+        ),
       ),
-      takeUntilDestroyed(this.destroyRef)
+      takeUntilDestroyed(this.destroyRef),
     ).subscribe(response => {
       this._tasks.set(
         response.filter(
-          item => !filters || !filters.length || filters.includes(item.status)
-        )
+          item => !filters || !filters.length || filters.includes(item.status),
+        ),
       );
     });
   }
@@ -100,10 +100,10 @@ export class ToDoList implements OnInit {
     this.apiTasksService.deleteTask(task)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(
-      response => {
+      () => {
         this._tasks.set(this.tasks().filter(element => element.id !== task.id));
         this.toastService.showToast('Удалена задача "' + task.title + '"', TOAST_TYPE_NOTICE);
-      }
+      },
     );
   }
 
@@ -114,7 +114,7 @@ export class ToDoList implements OnInit {
       response => {
         this._tasks.set([...this.tasks(), response]);
         this.toastService.showToast('Добавлена задача "' + task.title + '"', TOAST_TYPE_INFO);
-      }
+      },
     );
   }
 
@@ -129,11 +129,11 @@ export class ToDoList implements OnInit {
               return response;
             }
             return item;
-          }
+          },
         );
         this._editModeTaskId.set(null);
         this.toastService.showToast('Изменена задача "' + task.title + '"', TOAST_TYPE_NOTICE);
-      }
+      },
     );
   }
 

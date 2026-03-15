@@ -1,5 +1,10 @@
 import {Injectable} from '@angular/core';
-import {TASK_STATUS_COMPLETED, TASK_STATUS_IN_PROGRESS, Task, TaskBase, Filter} from '../../data/task';
+import {
+  TASK_STATUS_COMPLETED,
+  TASK_STATUS_IN_PROGRESS,
+  Task,
+  TaskBase,
+} from '../../data/task';
 
 /**
  * TODO: Как буд-то после ДЗ №6 больше не нужен.

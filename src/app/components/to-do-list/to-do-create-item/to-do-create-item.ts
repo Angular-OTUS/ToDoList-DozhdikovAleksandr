@@ -27,7 +27,7 @@ export class ToDoCreateItem {
   form = new FormGroup({
       title: new FormControl('', [Validators.required]),
       description: new FormControl(''),
-    }
+    },
   );
 
   public add(task: TaskBase): void {
@@ -48,7 +48,7 @@ export class ToDoCreateItem {
     const task: TaskBase = {
       title: this.form.value.title?? '',
       description: this.form.value.description ?? '',
-      status: TASK_STATUS_IN_PROGRESS
+      status: TASK_STATUS_IN_PROGRESS,
     }
 
     this.task.set(task);
