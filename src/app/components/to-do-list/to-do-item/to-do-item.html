@@ -1,4 +1,5 @@
-<div
+<a
+  [routerLink]="'/' + ROUTE_PATH.tasks + '/' + task().id"
   tabindex="0"
   class="item"
   [class.selected]="selected()"
@@ -44,4 +45,4 @@
           Delete
         </app-button>
     }
-</div>
+</a>

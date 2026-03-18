@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, computed, DestroyRef, inject, OnInit, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit, signal} from '@angular/core';
 import {ToDoItem} from './to-do-item/to-do-item';
 import {Task, TaskBase} from '../../data/task';
 import {map, switchMap, tap, timer} from 'rxjs';
@@ -8,7 +8,7 @@ import {ToastService} from '../../services/toasts/toast';
 import {TOAST_TYPE_INFO, TOAST_TYPE_NOTICE} from '../../data/toast';
 import {LoadingSpinner} from '../loading-spinner/loading-spinner';
 import {ToDoFilters} from '../to-do-filters/to-do-filters';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, RouterOutlet} from '@angular/router';
 import {ToDoCreateItem} from './to-do-create-item/to-do-create-item';
 import {ApiTasksService} from '../../services/api/api-tasks';
 
@@ -19,6 +19,7 @@ import {ApiTasksService} from '../../services/api/api-tasks';
     LoadingSpinner,
     ToDoFilters,
     ToDoCreateItem,
+    RouterOutlet,
   ],
   templateUrl: './to-do-list.html',
   styleUrl: './to-do-list.scss',
@@ -42,14 +43,6 @@ export class ToDoList implements OnInit {
 
   private _editModeTaskId = signal<number|null>(null);
   editModeTaskId = this._editModeTaskId.asReadonly();
-
-  selectedDescription = computed<string>(()=> {
-    const id = this._selectedId();
-    if (id) {
-      return this._tasks().find(element=> element.id === id)?.description ?? '';
-    }
-    return '';
-  })
 
   private route = inject(ActivatedRoute);
   private apiTasksService = inject(ApiTasksService);

@@ -12,6 +12,8 @@ import {Task, TASK_STATUS_COMPLETED, TASK_STATUS_IN_PROGRESS} from '../../../dat
 import {Button} from '../../button/button';
 import {TooltipDirective} from '../../../directives/tooltip';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {RouterLink} from '@angular/router';
+import {ROUTE_PATH} from '../../../app.routes';
 
 @Component({
   selector: 'app-to-do-item',
@@ -22,6 +24,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     TooltipDirective,
     ReactiveFormsModule,
     FormsModule,
+    RouterLink,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -34,6 +37,7 @@ export class ToDoItem {
   readonly updateItem = output<Task>();
   readonly selectedTask = output<number>();
   readonly editModeTask = output<number|null>();
+  readonly ROUTE_PATH = ROUTE_PATH;
 
   editInput = viewChild<ElementRef<HTMLInputElement>>('editInput');
 
