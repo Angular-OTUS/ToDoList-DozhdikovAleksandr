@@ -1,15 +1,14 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  DestroyRef,
   inject,
-  OnInit, output,
-  signal,
+  output,
 } from '@angular/core';
 import {Task, TASK_STATUS_IN_PROGRESS} from '../../data/task';
 import {ActivatedRoute} from '@angular/router';
 import {ApiTasksService} from '../../services/api/api-tasks';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {toSignal} from '@angular/core/rxjs-interop';
+import {map, switchMap, tap} from 'rxjs';
 
 @Component({
   selector: 'app-to-do-item-view',
@@ -18,34 +17,18 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
   styleUrl: './to-do-item-view.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ToDoItemView implements OnInit {
+export class ToDoItemView {
 
   private route = inject(ActivatedRoute);
-  private destroyRef = inject(DestroyRef);
-
-  readonly selectedTask = output<number>();
-
-  task = signal<Task>(this.emptyTask());
-
   private apiTasksService = inject(ApiTasksService);
 
-  ngOnInit() {
-    this.route.url.pipe(
-      takeUntilDestroyed(this.destroyRef),
-    ).subscribe(() => {
-      const id = Number(this.route.snapshot.paramMap.get('id'));
-      this.getTask(id);
-      this.selectedTask.emit(id);
-    });
-  }
-
-  getTask(id: number) {
-    this.apiTasksService.getTask(id).subscribe(
-      response => {
-        this.task.set(response);
-      },
-    );
-  }
+  task = toSignal(
+    this.route.paramMap.pipe(
+      map(params => Number(params.get('id'))),
+      switchMap(id => this.apiTasksService.getTask(id)),
+    ),
+    { initialValue: this.emptyTask() }
+  );
 
   private emptyTask(): Task {
     return {

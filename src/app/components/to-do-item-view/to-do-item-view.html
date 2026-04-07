@@ -1,7 +1,9 @@
-<div class="text status">
-  {{ task().status }}
-</div>
+@if (task(); as task) {
+  <div class="text status">
+    {{ task.status }}
+  </div>
 
-<div class="text">
-  {{ task().description }}
-</div>
+  <div class="text">
+    {{ task.description }}
+  </div>
+}
