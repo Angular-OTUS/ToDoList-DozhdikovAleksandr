@@ -21,10 +21,9 @@ export class ToDoFilters implements OnInit {
   toggleFilter(filter: Filter) {
     this.filters.update(()=> this.filters().map(
         item => {
-          if (item.id === filter.id) {
-            item.selected = !item.selected;
-          }
-          return item;
+          return item.id === filter.id
+            ? { ...item, selected: !item.selected } // новый объект
+            : item
         },
       ),
     );
@@ -45,20 +44,22 @@ export class ToDoFilters implements OnInit {
   }
 
   setQueryFilters() {
-    let queryFilters: string[] = [];
-    this.filters().forEach(
-      (filter) => {
-        if (filter.selected) {
-          queryFilters = [...queryFilters, filter.id]
-        }
-      },
-    );
+    const queryFilters = this.filters()
+      .filter(filter => filter.selected)
+      .map(filter => filter.id);
     this.router.navigate([], {queryParams: {filters: queryFilters}});
   }
 
   getQueryFilters() {
     const params = this.route.snapshot.queryParams;
-    const queryFilters: string[] = params["filters"];
+    const rawFilters: string[] = params["filters"];
+    const queryFilters = Array.isArray(rawFilters)
+      ? rawFilters
+      : rawFilters
+        ? [rawFilters]
+        : [];
+
+    console.log(queryFilters);
 
     if (queryFilters) {
       this.filters.set([...this.filters().map(

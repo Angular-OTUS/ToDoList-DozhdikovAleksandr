@@ -25,8 +25,7 @@ export class ToDoItemView implements OnInit {
 
   readonly selectedTask = output<number>();
 
-  private _task = signal<Task>(this.emptyTask());
-  task = this._task.asReadonly();
+  task = signal<Task>(this.emptyTask());
 
   private apiTasksService = inject(ApiTasksService);
 
@@ -43,7 +42,7 @@ export class ToDoItemView implements OnInit {
   getTask(id: number) {
     this.apiTasksService.getTask(id).subscribe(
       response => {
-        this._task.set(response);
+        this.task.set(response);
       },
     );
   }
