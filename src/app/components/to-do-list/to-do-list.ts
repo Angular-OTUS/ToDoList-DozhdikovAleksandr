@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit, signal} from '@angular/core';
 import {ToDoItem} from './to-do-item/to-do-item';
-import {Task, TaskBase} from '../../data/task';
+import {Task, TASK_STATUS_BACKLOG, TaskBase} from '../../data/task';
 import {map, switchMap, tap, timer} from 'rxjs';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {TasksService} from '../../services/tasks/tasks';
@@ -59,7 +59,7 @@ export class ToDoList implements OnInit {
     ).subscribe(() => this.setFiltersFromUrl());
   }
 
-  getTasks(filters?: string[]) {
+  getTasks(filters: string[] = [TASK_STATUS_BACKLOG]) {
     this.apiTasksService.getTasks().pipe(
       switchMap(response =>
         timer(500).pipe(

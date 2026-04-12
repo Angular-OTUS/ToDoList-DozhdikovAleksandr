@@ -1,0 +1,12 @@
+<div class="menu">
+  <div class="item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+    <a [routerLink]="'/' + ROUTE_PATH.tasks">
+      Backlog
+    </a>
+  </div>
+  <div class="item" [routerLinkActive]="'active'">
+    <a [routerLink]="'/' + ROUTE_PATH.board">
+      Board
+    </a>
+  </div>
+</div>

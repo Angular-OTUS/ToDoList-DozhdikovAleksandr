@@ -1,0 +1,20 @@
+.menu {
+  width: 200px;
+  font-weight: 700;
+  font-size: 14px;
+
+  .item {
+    a {
+      color: darkgray;
+      text-decoration: none;
+    }
+    padding: 10px 20px;
+
+    &.active {
+      a {
+        color: yellowgreen;
+      }
+      border: 1px #555555 solid;
+    }
+  }
+}

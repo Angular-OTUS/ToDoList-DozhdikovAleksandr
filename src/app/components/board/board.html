@@ -1,0 +1,19 @@
+<h1>Board</h1>
+<div class="board">
+
+    @for (filter of filters(); track filter.id) {
+      <div class="column">
+        <div class="title">
+          {{ filter.title }} ({{ tasksByStatus()[filter.id]?.length ?? 0 }})
+        </div>
+
+        @for (task of tasksByStatus()[filter.id]; track task.id) {
+          <div class="item">
+            {{ task.title }}
+          </div>
+        }
+
+      </div>
+    }
+</div>
+

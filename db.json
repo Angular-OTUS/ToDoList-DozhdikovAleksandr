@@ -17,6 +17,18 @@
       "title": "Нужно что-то сделать (3)...",
       "description": "Какая-то полезная информация (3)",
       "status": "completed"
+    },
+    {
+      "id": "4",
+      "title": "Отобрано для разработки (1)...",
+      "description": "Какая-то полезная информация (отобрано 1)",
+      "status": "backlog"
+    },
+    {
+      "id": "5",
+      "title": "Отобрано для разработки (2)...",
+      "description": "Какая-то полезная информация (отобрано 2)",
+      "status": "backlog"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
