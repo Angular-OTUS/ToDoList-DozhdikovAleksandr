@@ -3,11 +3,9 @@ import {ToDoItem} from './to-do-item/to-do-item';
 import {Task, TASK_STATUS_BACKLOG, TaskBase} from '../../data/task';
 import {map, switchMap, tap, timer} from 'rxjs';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {TasksService} from '../../services/tasks/tasks';
 import {ToastService} from '../../services/toasts/toast';
 import {TOAST_TYPE_INFO, TOAST_TYPE_NOTICE} from '../../data/toast';
 import {LoadingSpinner} from '../loading-spinner/loading-spinner';
-import {ToDoFilters} from '../to-do-filters/to-do-filters';
 import {ActivatedRoute, RouterOutlet} from '@angular/router';
 import {ToDoCreateItem} from './to-do-create-item/to-do-create-item';
 import {ApiTasksService} from '../../services/api/api-tasks';
@@ -17,7 +15,6 @@ import {ApiTasksService} from '../../services/api/api-tasks';
   imports: [
     ToDoItem,
     LoadingSpinner,
-    ToDoFilters,
     ToDoCreateItem,
     RouterOutlet,
   ],
@@ -28,7 +25,6 @@ import {ApiTasksService} from '../../services/api/api-tasks';
 
 export class ToDoList implements OnInit {
 
-  readonly tasksService = inject(TasksService);
   readonly toastService = inject(ToastService);
   private destroyRef = inject(DestroyRef);
 
@@ -36,9 +32,9 @@ export class ToDoList implements OnInit {
 
   isLoading = signal<boolean>(true);
 
-  selectedId = signal<number|null>(null);
+  selectedId = signal<string|null>(null);
 
-  editModeTaskId = signal<number|null>(null);
+  editModeTaskId = signal<string|null>(null);
 
   private route = inject(ActivatedRoute);
   private apiTasksService = inject(ApiTasksService);
@@ -111,27 +107,19 @@ export class ToDoList implements OnInit {
     this.apiTasksService.updateTask(task)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(
-      response => {
-        this.tasks().map(
-          item => {
-            if (item.id === response.id) {
-              return response;
-            }
-            return item;
-          },
-        );
+      () => {
         this.editModeTaskId.set(null);
         this.toastService.showToast('Изменена задача "' + task.title + '"', TOAST_TYPE_NOTICE);
       },
     );
   }
 
-  setSelectedId(id: number): void {
+  setSelectedId(id: string): void {
     this.selectedId.set(id);
     this.editModeTaskId.set(null);
   }
 
-  setEditModeTaskId(id: number|null): void {
+  setEditModeTaskId(id: string|null): void {
     this.editModeTaskId.set(id);
   }
 }

@@ -43,5 +43,5 @@ export interface TaskBase {
 }
 
 export interface Task extends TaskBase{
-  id: number;
+  id: string;
 }

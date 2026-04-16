@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, inject, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject, OnInit, signal} from '@angular/core';
 import {
   Filter,
   Task,
@@ -6,18 +6,17 @@ import {
   TASK_STATUS_BACKLOG,
   TASK_STATUS_COMPLETED,
   TASK_STATUS_IN_PROGRESS,
-  TASK_STATUS_LIST
+  TASK_STATUS_LIST,
 } from '../../data/task';
 import {ApiTasksService} from '../../services/api/api-tasks';
 
 @Component({
   selector: 'app-board',
-  imports: [],
   templateUrl: './board.html',
   styleUrl: './board.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Board {
+export class Board implements OnInit {
   private apiTasksService = inject(ApiTasksService);
 
   filters = signal<Filter[]>(TASK_STATUS_LIST);
@@ -27,7 +26,7 @@ export class Board {
       [TASK_STATUS_BACKLOG]: null,
       [TASK_STATUS_IN_PROGRESS]: null,
       [TASK_STATUS_COMPLETED]: null,
-    }
+    },
   );
 
   ngOnInit() {

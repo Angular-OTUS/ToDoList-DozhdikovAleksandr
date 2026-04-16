@@ -5,7 +5,6 @@ export enum ROUTE_PATH {
   board = 'board',
 }
 
-// @ts-ignore
 export const routes: Routes = [
   {
     path: '',

@@ -35,8 +35,8 @@ export class ToDoItem {
   readonly task = input.required<Task>();
   readonly deleteItem = output<Task>();
   readonly updateItem = output<Task>();
-  readonly selectedTask = output<number>();
-  readonly editModeTask = output<number|null>();
+  readonly selectedTask = output<string>();
+  readonly editModeTask = output<string|null>();
   readonly ROUTE_PATH = ROUTE_PATH;
 
   editInput = viewChild<ElementRef<HTMLInputElement>>('editInput');
@@ -55,7 +55,7 @@ export class ToDoItem {
     }
   }
 
-  onEdit(id: number) {
+  onEdit(id: string) {
     this.editModeTask.emit(id);
   }
 
