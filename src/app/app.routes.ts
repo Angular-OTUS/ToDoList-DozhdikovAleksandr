@@ -1,9 +1,8 @@
 import { Routes } from '@angular/router';
-import {ToDoList} from './components/to-do-list/to-do-list';
-import {ToDoItemView} from './components/to-do-item-view/to-do-item-view';
 
 export enum ROUTE_PATH {
-  tasks = 'tasks',
+  tasks = 'backlog',
+  board = 'board',
 }
 
 export const routes: Routes = [
@@ -12,6 +11,12 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./components/to-do-list/to-do-list')
         .then(m => m.ToDoList),
+  },
+  {
+    path: ROUTE_PATH.board,
+    loadComponent: () =>
+      import('./components/board/board')
+        .then(m => m.Board),
   },
   {
     path: ROUTE_PATH.tasks,

@@ -2,4 +2,23 @@
   display: flex;
   justify-content: center;
   width: 100%;
+
+  .left-block {
+    display: flex;
+    flex-direction: column;
+    background: #000000;
+
+    .app-name {
+      color: #ffffff;
+      font-size: 24px;
+      font-weight: 900;
+      padding: 20px;
+    }
+  }
+
+  .right-block {
+    padding: 0 20px 20px 20px;
+    border: 1px #000000 solid;
+    width: 1200px;
+  }
 }

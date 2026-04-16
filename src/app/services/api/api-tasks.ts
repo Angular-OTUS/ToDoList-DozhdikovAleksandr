@@ -3,7 +3,6 @@ import {inject, Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {Task, TaskBase} from '../../data/task';
 import {environment} from '../../../environments/environments';
-import {ROUTE_PATH} from '../../app.routes';
 
 @Injectable({
   providedIn: 'root',
@@ -13,22 +12,22 @@ export class ApiTasksService {
   private http = inject(HttpClient)
 
   getTasks(): Observable<Task[]> {
-    return this.http.get<Task[]>(environment.apiUrl + '/' + ROUTE_PATH.tasks);
+    return this.http.get<Task[]>(environment.apiUrl);
   }
 
   addTask(task: TaskBase): Observable<Task> {
-    return this.http.post<Task>(environment.apiUrl + '/' + ROUTE_PATH.tasks, task);
+    return this.http.post<Task>(environment.apiUrl, task);
   }
 
   updateTask(task: Task): Observable<Task> {
-    return this.http.patch<Task>(environment.apiUrl + '/' + ROUTE_PATH.tasks + '/' + task.id, task);
+    return this.http.patch<Task>(environment.apiUrl + '/' + task.id, task);
   }
 
   deleteTask(task: Task): Observable<Task> {
-    return this.http.delete<Task>(environment.apiUrl + '/' + ROUTE_PATH.tasks + '/' + task.id);
+    return this.http.delete<Task>(environment.apiUrl + '/' + task.id);
   }
 
   getTask(id: number): Observable<Task> {
-    return this.http.get<Task>(environment.apiUrl + '/' + ROUTE_PATH.tasks + '/' + id);
+    return this.http.get<Task>(environment.apiUrl + '/' + id);
   }
 }

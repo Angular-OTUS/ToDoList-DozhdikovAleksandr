@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, output, signal} from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
-import {TASK_STATUS_IN_PROGRESS, TaskBase} from '../../../data/task';
+import {TASK_STATUS_BACKLOG, TASK_STATUS_IN_PROGRESS, TaskBase} from '../../../data/task';
 import {TooltipDirective} from '../../../directives/tooltip';
 
 @Component({
@@ -48,7 +48,7 @@ export class ToDoCreateItem {
     const task: TaskBase = {
       title: this.form.value.title?? '',
       description: this.form.value.description ?? '',
-      status: TASK_STATUS_IN_PROGRESS,
+      status: TASK_STATUS_BACKLOG,
     }
 
     this.task.set(task);
