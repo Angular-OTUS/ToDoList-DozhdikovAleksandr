@@ -3,7 +3,7 @@ import {
   Component,
   inject,
 } from '@angular/core';
-import {Task, TASK_STATUS_IN_PROGRESS} from '../../data/task';
+import {Task, TASK_STATUS_BACKLOG, TASK_STATUS_IN_PROGRESS} from '../../data/task';
 import {ActivatedRoute} from '@angular/router';
 import {ApiTasksService} from '../../services/api/api-tasks';
 import {toSignal} from '@angular/core/rxjs-interop';
@@ -33,7 +33,7 @@ export class ToDoItemView {
       id: "0",
       title: '',
       description: '',
-      status: TASK_STATUS_IN_PROGRESS,
+      status: TASK_STATUS_BACKLOG,
     }
   }
 }

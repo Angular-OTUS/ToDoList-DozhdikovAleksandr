@@ -59,8 +59,6 @@ export class ToDoFilters implements OnInit {
         ? [rawFilters]
         : [];
 
-    console.log(queryFilters);
-
     if (queryFilters) {
       this.filters.set([...this.filters().map(
         item => {
