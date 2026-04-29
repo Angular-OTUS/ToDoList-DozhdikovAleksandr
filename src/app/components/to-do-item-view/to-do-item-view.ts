@@ -3,7 +3,7 @@ import {
   Component,
   inject,
 } from '@angular/core';
-import {Task, TASK_STATUS_BACKLOG, TASK_STATUS_IN_PROGRESS} from '../../data/task';
+import {Task, TASK_STATUS_BACKLOG} from '../../data/task';
 import {ActivatedRoute} from '@angular/router';
 import {ApiTasksService} from '../../services/api/api-tasks';
 import {toSignal} from '@angular/core/rxjs-interop';

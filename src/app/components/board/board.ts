@@ -9,12 +9,17 @@ import {
   TASK_STATUS_LIST,
 } from '../../data/task';
 import {ApiTasksService} from '../../services/api/api-tasks';
+import {ROUTE_PATH} from '../../app.routes';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-board',
   templateUrl: './board.html',
   styleUrl: './board.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    RouterLink
+  ]
 })
 export class Board implements OnInit {
   private apiTasksService = inject(ApiTasksService);
@@ -51,4 +56,6 @@ export class Board implements OnInit {
       this.tasksByStatus.set(tasksByStatus);
     });
   }
+
+  protected readonly ROUTE_PATH = ROUTE_PATH;
 }

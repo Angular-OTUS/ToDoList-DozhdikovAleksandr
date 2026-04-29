@@ -8,9 +8,9 @@
         </div>
 
         @for (task of tasksByStatus()[filter.id]; track task.id) {
-          <div class="item">
+          <a class="item" [routerLink]="['/', ROUTE_PATH.tasks, task.id]">
             {{ task.title }}
-          </div>
+          </a>
         }
 
       </div>

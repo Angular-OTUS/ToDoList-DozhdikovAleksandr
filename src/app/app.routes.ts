@@ -8,9 +8,8 @@ export enum ROUTE_PATH {
 export const routes: Routes = [
   {
     path: '',
-    loadComponent: () =>
-      import('./components/to-do-list/to-do-list')
-        .then(m => m.ToDoList),
+    redirectTo: ROUTE_PATH.tasks,
+    pathMatch: 'full'
   },
   {
     path: ROUTE_PATH.board,
